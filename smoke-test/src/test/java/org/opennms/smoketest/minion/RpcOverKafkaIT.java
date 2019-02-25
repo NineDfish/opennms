@@ -93,19 +93,19 @@ public class RpcOverKafkaIT {
         // Add node and interface with minion location.
         DetectorsOnMinionIT.addRequisition(restClient, "MINION", LOCALHOST);
         await().atMost(3, MINUTES).pollInterval(15, SECONDS)
-        .until(this::detectIcmpAtLocationMinion, containsString("'ICMP' WAS detected on 127.0.0.1"));
+        .until(this::detectJdbcAtLocationMinion, containsString("'JDBC' WAS detected on localhost"));
 
     }
     
-    private String detectIcmpAtLocationMinion() throws Exception {
+    private String detectJdbcAtLocationMinion() throws Exception {
         String shellOutput;
         try (final SshClient sshClient = new SshClient(opennmsKarafSshAddr, "admin", "admin")) {
             PrintStream pipe = sshClient.openShell();
-            pipe.println("detect -l MINION ICMP 127.0.0.1");
+            pipe.println("detect -l MINION JDBC localhost password=''");
             pipe.println("logout");
             await().atMost(90, SECONDS).until(sshClient.isShellClosedCallable());
             shellOutput = CommandTestUtils.stripAnsiCodes(sshClient.getStdout());
-            shellOutput = StringUtils.substringAfter(shellOutput, "detect -l MINION ICMP 127.0.0.1");
+            shellOutput = StringUtils.substringAfter(shellOutput, "detect -l MINION JDBC localhost password=''");
         }
         return shellOutput;
     }
