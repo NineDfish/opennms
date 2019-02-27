@@ -115,6 +115,10 @@
   <bean id="resourceTypesExtensionManager" class="org.opennms.features.apilayer.config.ResourceTypesExtensionManager">
   </bean>
 
+  <!-- Resource Graph Properties Extension -->
+  <bean id="resourceGraphPropertiesExtensionManager" class="org.opennms.features.apilayer.config.ResourceGraphPropertiesExtensionManager">
+  </bean>
+
   <reference-list interface="org.opennms.integration.api.v1.config.datacollection.ResourceTypesExtension" availability="optional">
     <reference-listener bind-method="onBind" unbind-method="onUnbind" ref="resourceTypesExtensionManager" />
   </reference-list>
